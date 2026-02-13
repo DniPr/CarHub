@@ -1,4 +1,6 @@
 using CarHub.Data;
+using CarHub.Services;
+using CarHub.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +30,7 @@ namespace CarHub
                 options.SignIn.RequireConfirmedAccount = false;
             })
             .AddEntityFrameworkStores<CarHubDbContext>();
+            builder.Services.AddScoped<ICarAdService, CarAdService>();
 
             builder.Services.AddControllersWithViews();
 
