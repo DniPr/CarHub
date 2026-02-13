@@ -48,7 +48,7 @@ namespace CarHub.Models
         public string ImageUrl { get; set; } = null!;
 
         [Required]
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedOn { get; set; }
 
         [Required]
         [ForeignKey(nameof(Category))]
