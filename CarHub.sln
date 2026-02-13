@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36811.4 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarHub", "CarHub\CarHub.csproj", "{7A23D3E1-2640-40FB-9534-62FC463A0B48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarHub.GCommon.EntityValidations", "CarHub.GCommon.EntityValidations\CarHub.GCommon.EntityValidations.csproj", "{EF532BE1-B60E-4425-B2E4-C455F282AB59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7A23D3E1-2640-40FB-9534-62FC463A0B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A23D3E1-2640-40FB-9534-62FC463A0B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A23D3E1-2640-40FB-9534-62FC463A0B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF532BE1-B60E-4425-B2E4-C455F282AB59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF532BE1-B60E-4425-B2E4-C455F282AB59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF532BE1-B60E-4425-B2E4-C455F282AB59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF532BE1-B60E-4425-B2E4-C455F282AB59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
