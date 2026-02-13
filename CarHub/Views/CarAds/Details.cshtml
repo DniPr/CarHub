@@ -35,13 +35,11 @@
 
         <p>@Model.Description</p>
 
-        <a asp-controller="CarAds"
-           asp-action="Index"
-           class="btn btn-secondary mt-3">
-
-            Back
-
-        </a>
+        <a asp-controller="CarAds"asp-action="Index"class="btn btn-secondary mt-3">Back</a>
+        @if (Model.IsOwner)
+        {
+            <a asp-controller="CarAds" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Edit</a>
+        }
 
     </div>
 

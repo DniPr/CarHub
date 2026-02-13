@@ -61,5 +61,49 @@ namespace CarHub.Controllers
             await carAdService.CreateAsync(model, ownerId);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await carAdService.GetEditModelAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            if (!await carAdService.IsOwnerAsync(id, userId))
+            {
+                return Unauthorized();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(CarAdCreateVM model)
+        {
+            var modelFromDb = await carAdService.GetEditModelAsync(model.Id);
+            if (modelFromDb == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            if (!await carAdService.IsOwnerAsync(model.Id, userId))
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = modelFromDb.Categories;
+                return View(model);
+            }
+            await carAdService.UpdateAsync(model, model.Id);
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
     }
 }

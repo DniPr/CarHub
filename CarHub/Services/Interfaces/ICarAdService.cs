@@ -10,5 +10,7 @@ namespace CarHub.Services.Interfaces
         Task<CarAdCreateVM> GetCreateModelAsync();
         Task CreateAsync(CarAdCreateVM model, string ownerId);
         Task<IEnumerable<CategoryDropdownVM>> GetAllCategories();
+        Task<CarAdCreateVM?> GetEditModelAsync(int id);
+        Task UpdateAsync(CarAdCreateVM model);
     }
 }

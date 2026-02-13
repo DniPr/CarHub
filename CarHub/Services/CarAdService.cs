@@ -72,6 +72,7 @@ namespace CarHub.Services
         {
             var carAd = new CarAd
             {
+                Id = model.Id,
                 Title = model.Title,
                 Brand = model.Brand,
                 Model = model.Model,
@@ -89,8 +90,58 @@ namespace CarHub.Services
             await dbContext.CarAds.AddAsync(carAd);
             await dbContext.SaveChangesAsync();
         }
+        public async Task<CarAdCreateVM?> GetEditModelAsync(int id)
+        {
+            var model = await dbContext.CarAds
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
 
+            if (model == null)
+            {
+                throw new ArgumentException("Car ad not found.");
+            }
+            CarAdCreateVM? editModel = new CarAdCreateVM
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Brand = model.Brand,
+                Model = model.Model,
+                Year = model.Year,
+                Price = model.Price,
+                Mileage = model.Mileage,
+                FuelType = model.FuelType,
+                Transmission = model.Transmission,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                CategoryId = model.CategoryId,
+                Categories = await GetAllCategories()
+            };
+            return editModel;
+        }
+        public async Task UpdateAsync(CarAdCreateVM model)
+        {
+            var car = await dbContext.CarAds.FindAsync(model.Id);
 
+            if (car == null)
+            {
+                return;
+            }
+
+            car.Title = model.Title;
+            car.Brand = model.Brand;
+            car.Model = model.Model;
+            car.Year = model.Year;
+            car.Price = model.Price;
+            car.Mileage = model.Mileage;
+            car.FuelType = model.FuelType;
+            car.Transmission = model.Transmission;
+            car.Description = model.Description;
+            car.ImageUrl = model.ImageUrl;
+            car.CategoryId = model.CategoryId;
+
+            await dbContext.SaveChangesAsync();
+        }
 
         //
         public async Task<IEnumerable<CategoryDropdownVM>> GetAllCategories()
