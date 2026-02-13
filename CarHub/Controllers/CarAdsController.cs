@@ -1,4 +1,6 @@
 ﻿using CarHub.Services.Interfaces;
+using CarHub.ViewModels.CarAdVMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -33,6 +35,31 @@ namespace CarHub.Controllers
             }
 
             return View(car);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            var model = await carAdService.GetCreateModelAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(CarAdCreateVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var vm = await carAdService.GetCreateModelAsync();
+                model.Categories = vm.Categories;
+                return View(model);
+            }
+
+            var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            await carAdService.CreateAsync(model, ownerId);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
