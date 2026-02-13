@@ -24,5 +24,7 @@
 
         public const int CarDescriptionMinLength = 10;
         public const int CarDescriptionMaxLength = 1000;
+
+        public const string CarPriceType = "decimal(18,2)";
     }
 }

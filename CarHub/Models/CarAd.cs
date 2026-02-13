@@ -25,6 +25,7 @@ namespace CarHub.Models
         public int Year { get; set; }
 
         [Required]
+        [Column(TypeName = CarPriceType)]
         public decimal Price { get; set; }
 
         [Required]

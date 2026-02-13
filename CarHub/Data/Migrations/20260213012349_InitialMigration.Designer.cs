@@ -4,6 +4,7 @@ using CarHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarHub.Data.Migrations
 {
     [DbContext(typeof(CarHubDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260213012349_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,38 +111,6 @@ namespace CarHub.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Sedan"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Hatchback"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "SUV"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Coupe"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Wagon"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Pickup"
-                        });
                 });
 
             modelBuilder.Entity("CarHub.Models.Favorite", b =>
