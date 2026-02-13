@@ -1,0 +1,48 @@
+﻿@model CarAdDetailsVM
+
+@{
+    ViewData["Title"] = "Car Details";
+}
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <img src="@Model.ImageUrl"
+             class="img-fluid rounded shadow-sm" />
+
+    </div>
+
+    <div class="col-md-6">
+
+        <h2>@Model.Brand @Model.Model (@Model.Year)</h2>
+
+        <h4 class="text-primary mb-3">
+            @Model.Price.ToString("N0") €
+        </h4>
+
+        <p><strong>Mileage:</strong> @Model.Mileage km</p>
+
+        <p><strong>Fuel:</strong> @Model.FuelType</p>
+
+        <p><strong>Transmission:</strong> @Model.Transmission</p>
+
+        <p><strong>Category:</strong> @Model.CategoryName</p>
+
+        <p><strong>Posted on:</strong> @Model.CreatedOn.ToLocalTime().ToString("dd.MM.yyyy")</p>
+
+        <hr />
+
+        <p>@Model.Description</p>
+
+        <a asp-controller="CarAds"
+           asp-action="Index"
+           class="btn btn-secondary mt-3">
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
