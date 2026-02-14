@@ -83,7 +83,7 @@ Relationships:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/CarHub.git
+git clone https://github.com/DniPr/CarHub.git
 ```
 
 ### 2. Open in Visual Studio
@@ -121,26 +121,6 @@ Start Debugging
 ## 🔐 Test User (Optional)
 
 You can register a new account from the Register page.
-
----
-
-## 📁 Project Structure
-
-```
-CarHub/
-│
-├── Controllers/
-├── Data/
-├── Models/
-├── ViewModels/
-├── Services/
-│   ├── Core/
-│   └── Interfaces/
-├── Views/
-├── Areas/Identity/
-├── Migrations/
-└── Program.cs
-```
 
 ---
 
