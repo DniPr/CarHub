@@ -31,7 +31,6 @@ namespace CarHub.Services
             dbContext.FavoriteCarAds.Add(favorite);
             await dbContext.SaveChangesAsync();
         }
-
         public async Task<IEnumerable<CarAdIndexVM>> GetMyFavoritesAsync(string userId)
         {
             return await dbContext.FavoriteCarAds
@@ -50,14 +49,12 @@ namespace CarHub.Services
                 })
                 .ToListAsync();
         }
-
         public async Task<bool> IsFavoriteAsync(int carAdId, string userId)
         {
             return await dbContext.FavoriteCarAds
                 .AsNoTracking()
                 .AnyAsync(f => f.CarAdId == carAdId && f.UserId == userId);
         }
-
         public async Task RemoveAsync(int carAdId, string userId)
         {
             var favorite = await dbContext.FavoriteCarAds
