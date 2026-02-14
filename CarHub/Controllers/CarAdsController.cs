@@ -105,5 +105,38 @@ namespace CarHub.Controllers
             await carAdService.UpdateAsync(model, id);
             return RedirectToAction(nameof(Details), new { id });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await carAdService.GetDeleteModelAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            if (!await carAdService.IsOwnerAsync(id, userId))
+            {
+                return Unauthorized();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConformation(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            if (!await carAdService.IsOwnerAsync(id, userId))
+            {
+                return Unauthorized();
+            }
+
+            await carAdService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

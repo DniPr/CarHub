@@ -1,0 +1,30 @@
+﻿@model CarAdDeleteVM
+
+@{
+    ViewData["Title"] = "Delete Car Ad";
+}
+
+<h2 class="text-danger mb-4">Delete Car Ad</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this car ad? This action cannot be undone.
+</div>
+
+<div class="card shadow-sm mb-3" style="max-width: 700px;">
+    <img src="@Model.ImageUrl" class="card-img-top" style="height: 260px; object-fit: cover;" />
+    <div class="card-body">
+        <h5 class="card-title">@Model.Brand @Model.Model (@Model.Year)</h5>
+        <p class="card-text">@Model.Price.ToString("N0") €</p>
+        <p class="card-text"><small class="text-muted">@Model.Title</small></p>
+    </div>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+        Cancel
+    </a>
+</form>

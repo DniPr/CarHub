@@ -141,6 +141,38 @@ namespace CarHub.Services
 
             await dbContext.SaveChangesAsync();
         }
+        public async Task<CarAdDeleteVM?> GetDeleteModelAsync(int id)
+        {
+            return await dbContext.CarAds
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(c => new CarAdDeleteVM
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Brand = c.Brand,
+                    Model = c.Model,
+                    Year = c.Year,
+                    Price = c.Price,
+                    ImageUrl = c.ImageUrl
+                })
+                .FirstOrDefaultAsync();
+        }
+        public async Task DeleteAsync(int id)
+        {
+            var car = await dbContext.CarAds.FindAsync(id);
+            if (car == null)
+            {
+                return;
+            }
+
+            //var favorites = dbContext.Favorites.Where(f => f.CarAdId == id);
+            //dbContext.Favorites.RemoveRange(favorites);
+
+            dbContext.CarAds.Remove(car);
+            await dbContext.SaveChangesAsync();
+        }
+
 
         //
         public async Task<IEnumerable<CategoryDropdownVM>> GetAllCategories()
