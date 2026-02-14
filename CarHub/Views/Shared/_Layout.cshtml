@@ -33,11 +33,11 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="CarAds" asp-action="Create">Create Ad</a>
                             </li>
-                        }
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="CarAds" asp-action="MyAds">My Cars</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Favorites" asp-action="MyFavorites">Favorites</a>
                             </li>
                         }
                     </ul>
