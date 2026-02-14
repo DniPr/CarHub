@@ -89,7 +89,7 @@ namespace CarHub.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("CarAds");
+                    b.ToTable("CarAds", (string)null);
                 });
 
             modelBuilder.Entity("CarHub.Models.Category", b =>
@@ -107,7 +107,7 @@ namespace CarHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -154,7 +154,7 @@ namespace CarHub.Data.Migrations
 
                     b.HasIndex("CarAdId");
 
-                    b.ToTable("FavoriteCarAds");
+                    b.ToTable("FavoriteCarAds", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

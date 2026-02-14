@@ -6,7 +6,7 @@ namespace CarHub.Services.Interfaces
     {
         Task AddAsync(int carAdId, string userId);
         Task RemoveAsync(int carAdId, string userId);
-        Task<bool> IsFavoriteAsync(int carAdId, string userId);
-        Task<IEnumerable<CarAdIndexVM>> GetMyFavoritesAsync(string userId);
+        Task<bool> IsFavouriteAsync(int carAdId, string userId);
+        Task<IEnumerable<CarAdIndexVM>> GetMyFavouritesAsync(string userId);
     }
 }

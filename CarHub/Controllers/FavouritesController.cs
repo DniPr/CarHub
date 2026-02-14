@@ -19,7 +19,7 @@ namespace CarHub.Controllers
         public async Task<IActionResult> MyFavourites()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var model = await favouriteService.GetMyFavoritesAsync(userId);
+            var model = await favouriteService.GetMyFavouritesAsync(userId);
             return View(model);
         }
 

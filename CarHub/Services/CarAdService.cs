@@ -166,8 +166,8 @@ namespace CarHub.Services
                 return;
             }
 
-            //var favorites = dbContext.Favorites.Where(f => f.CarAdId == id);
-            //dbContext.Favorites.RemoveRange(favorites);
+            var favorites = dbContext.FavoriteCarAds.Where(f => f.CarAdId == id);
+            dbContext.FavoriteCarAds.RemoveRange(favorites);
 
             dbContext.CarAds.Remove(car);
             await dbContext.SaveChangesAsync();

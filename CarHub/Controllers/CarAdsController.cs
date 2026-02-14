@@ -1,4 +1,5 @@
-﻿using CarHub.Services.Interfaces;
+﻿using CarHub.Services;
+using CarHub.Services.Interfaces;
 using CarHub.ViewModels.CarAdVMs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@ namespace CarHub.Controllers
     public class CarAdsController : Controller
     {
         private readonly ICarAdService carAdService;
+        private readonly IFavouriteService favouriteService;
 
-        public CarAdsController(ICarAdService carAdService)
+        public CarAdsController(ICarAdService carAdService, IFavouriteService favouriteService)
         {
             this.carAdService = carAdService;
+            this.favouriteService = favouriteService;
         }
         public async Task<IActionResult> Index()
         {
@@ -32,6 +35,7 @@ namespace CarHub.Controllers
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 car.IsOwner = await carAdService.IsOwnerAsync(id, userId);
+                car.IsFavourite = await favouriteService.IsFavouriteAsync(id, userId);
             }
 
             return View(car);

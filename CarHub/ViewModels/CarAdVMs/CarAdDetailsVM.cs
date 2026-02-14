@@ -16,5 +16,6 @@
         public string CategoryName { get; set; } = null!;
         public DateTime CreatedOn { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsFavourite { get; set; }
     }
 }

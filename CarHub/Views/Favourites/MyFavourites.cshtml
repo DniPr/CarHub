@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<CarAdIndexVM>
 
 @{
-    ViewData["Title"] = "My Favorites";
+    ViewData["Title"] = "My Favourites";
 }
 
-<h2 class="mb-4">My Favorites</h2>
+<h2 class="mb-4">My Favourites</h2>
 
 <div class="row">
     @foreach (var car in Model)
@@ -37,5 +37,5 @@
 
 @if (!Model.Any())
 {
-    <p>You have no favorite cars yet.</p>
+    <p>You have no favourite cars yet.</p>
 }
