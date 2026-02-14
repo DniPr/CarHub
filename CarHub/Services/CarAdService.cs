@@ -172,7 +172,24 @@ namespace CarHub.Services
             dbContext.CarAds.Remove(car);
             await dbContext.SaveChangesAsync();
         }
-
+        public async Task<IEnumerable<CarAdIndexVM>> GetMineAsync(string userId)
+        {
+            return await dbContext.CarAds
+                .AsNoTracking()
+                .Where(c => c.OwnerId == userId)
+                .OrderByDescending(c => c.CreatedOn)
+                .Select(c => new CarAdIndexVM
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Brand = c.Brand,
+                    Model = c.Model,
+                    Year = c.Year,
+                    Price = c.Price,
+                    ImageUrl = c.ImageUrl
+                })
+                .ToListAsync();
+        }
 
         //
         public async Task<IEnumerable<CategoryDropdownVM>> GetAllCategories()

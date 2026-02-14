@@ -138,5 +138,14 @@ namespace CarHub.Controllers
             await carAdService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> MyAds()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var cars = await carAdService.GetMineAsync(userId);
+            return View(cars);
+        }
     }
 }

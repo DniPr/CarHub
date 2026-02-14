@@ -14,5 +14,6 @@ namespace CarHub.Services.Interfaces
         Task UpdateAsync(CarAdCreateVM model,int id);
         Task<CarAdDeleteVM?> GetDeleteModelAsync(int id);
         Task DeleteAsync(int id);
+        Task<IEnumerable<CarAdIndexVM>> GetMineAsync(string userId);
     }
 }
