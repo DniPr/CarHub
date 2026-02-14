@@ -3,6 +3,7 @@ using CarHub.Models;
 using CarHub.Services.Interfaces;
 using CarHub.ViewModels.CarAdVMs;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CarHub.Services
 {
@@ -72,7 +73,6 @@ namespace CarHub.Services
         {
             var carAd = new CarAd
             {
-                Id = model.Id,
                 Title = model.Title,
                 Brand = model.Brand,
                 Model = model.Model,
@@ -103,7 +103,6 @@ namespace CarHub.Services
             }
             CarAdCreateVM? editModel = new CarAdCreateVM
             {
-                Id = model.Id,
                 Title = model.Title,
                 Brand = model.Brand,
                 Model = model.Model,
@@ -119,13 +118,13 @@ namespace CarHub.Services
             };
             return editModel;
         }
-        public async Task UpdateAsync(CarAdCreateVM model)
+        public async Task UpdateAsync(CarAdCreateVM model,int id)
         {
-            var car = await dbContext.CarAds.FindAsync(model.Id);
+            var car = await dbContext.CarAds.FindAsync(id);
 
             if (car == null)
             {
-                return;
+                throw new ArgumentException("Car Ad not found");
             }
 
             car.Title = model.Title;

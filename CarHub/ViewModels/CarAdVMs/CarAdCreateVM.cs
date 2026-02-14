@@ -5,7 +5,6 @@ namespace CarHub.ViewModels.CarAdVMs
 {
     public class CarAdCreateVM
     {
-        public int Id { get; set; }
         [Required]
         [MinLength(CarTitleMinLength)]
         [MaxLength(CarTitleMaxLength)]

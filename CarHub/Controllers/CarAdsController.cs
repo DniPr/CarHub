@@ -41,24 +41,24 @@ namespace CarHub.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            var model = await carAdService.GetCreateModelAsync();
-            return View(model);
+            var modelForm = await carAdService.GetCreateModelAsync();
+            return View(modelForm);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(CarAdCreateVM model)
+        public async Task<IActionResult> Create(CarAdCreateVM modelForm)
         {
             if (!ModelState.IsValid)
             {
                 var vm = await carAdService.GetCreateModelAsync();
-                model.Categories = vm.Categories;
-                return View(model);
+                modelForm.Categories = vm.Categories;
+                return View(modelForm);
             }
 
             var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-            await carAdService.CreateAsync(model, ownerId);
+            await carAdService.CreateAsync(modelForm, ownerId);
             return RedirectToAction(nameof(Index));
         }
 
@@ -83,16 +83,16 @@ namespace CarHub.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(CarAdCreateVM model)
+        public async Task<IActionResult> Edit(CarAdCreateVM model , int id)
         {
-            var modelFromDb = await carAdService.GetEditModelAsync(model.Id);
+            var modelFromDb = await carAdService.GetEditModelAsync(id);
             if (modelFromDb == null)
             {
                 return NotFound();
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            if (!await carAdService.IsOwnerAsync(model.Id, userId))
+            if (!await carAdService.IsOwnerAsync(id, userId))
             {
                 return Unauthorized();
             }
@@ -102,8 +102,8 @@ namespace CarHub.Controllers
                 model.Categories = modelFromDb.Categories;
                 return View(model);
             }
-            await carAdService.UpdateAsync(model, model.Id);
-            return RedirectToAction(nameof(Details), new { id = model.Id });
+            await carAdService.UpdateAsync(model, id);
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }
