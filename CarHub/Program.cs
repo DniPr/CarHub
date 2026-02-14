@@ -31,6 +31,7 @@ namespace CarHub
             })
             .AddEntityFrameworkStores<CarHubDbContext>();
             builder.Services.AddScoped<ICarAdService, CarAdService>();
+            builder.Services.AddScoped<IFavouriteService, FavouriteService>();
 
             builder.Services.AddControllersWithViews();
 
