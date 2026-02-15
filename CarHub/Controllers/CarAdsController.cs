@@ -87,26 +87,21 @@ namespace CarHub.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(CarAdCreateVM model , int id)
+        public async Task<IActionResult> Edit([FromRoute] int id, CarAdCreateVM inputModel)
         {
             var modelFromDb = await carAdService.GetEditModelAsync(id);
-            if (modelFromDb == null)
-            {
-                return NotFound();
-            }
+            if (modelFromDb == null) return NotFound();
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            if (!await carAdService.IsOwnerAsync(id, userId))
-            {
-                return Unauthorized();
-            }
+            if (!await carAdService.IsOwnerAsync(id, userId)) return Unauthorized();
 
             if (!ModelState.IsValid)
             {
-                model.Categories = modelFromDb.Categories;
-                return View(model);
+                inputModel.Categories = modelFromDb.Categories;
+                return View(inputModel);
             }
-            await carAdService.UpdateAsync(model, id);
+
+            await carAdService.UpdateAsync(inputModel, id);
             return RedirectToAction(nameof(Index));
         }
 

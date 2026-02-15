@@ -99,7 +99,7 @@ namespace CarHub.Service.Core
 
             if (model == null)
             {
-                throw new ArgumentException("Car ad not found.");
+                return null;
             }
             CarAdCreateVM? editModel = new CarAdCreateVM
             {
