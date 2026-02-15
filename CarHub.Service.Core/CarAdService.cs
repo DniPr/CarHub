@@ -1,11 +1,11 @@
 ﻿using CarHub.Data;
-using CarHub.Models;
-using CarHub.Services.Interfaces;
+using CarHub.Data.Models;
+using CarHub.Service.Core.Interfaces;
 using CarHub.ViewModels.CarAdVMs;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace CarHub.Services
+namespace CarHub.Service.Core
 {
     public class CarAdService : ICarAdService
     {

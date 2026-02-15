@@ -1,6 +1,6 @@
 ﻿using CarHub.ViewModels.CarAdVMs;
 
-namespace CarHub.Services.Interfaces
+namespace CarHub.Service.Core.Interfaces
 {
     public interface ICarAdService
     {

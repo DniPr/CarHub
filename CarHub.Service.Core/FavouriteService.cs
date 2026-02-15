@@ -1,10 +1,10 @@
 ﻿using CarHub.Data;
-using CarHub.Models;
-using CarHub.Services.Interfaces;
+using CarHub.Data.Models;
+using CarHub.Service.Core.Interfaces;
 using CarHub.ViewModels.CarAdVMs;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarHub.Services
+namespace CarHub.Service.Core
 {
     public class FavouriteService : IFavouriteService
     {
@@ -17,9 +17,9 @@ namespace CarHub.Services
         {
             bool exists = await dbContext.FavoriteCarAds
                 .AnyAsync(f => f.CarAdId == carAdId && f.UserId == userId);
-            if (!exists)
+            if (exists)
             {
-                throw new ArgumentException("An error has occured");
+                throw new InvalidOperationException("Already in favourites.");
             }
 
             var favorite = new Favorite

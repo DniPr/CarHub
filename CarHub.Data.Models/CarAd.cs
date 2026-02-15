@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CarHub.GCommon.EntityValidations.EntityValidations;
-namespace CarHub.Models
+namespace CarHub.Data.Models
 {
     public class CarAd
     {

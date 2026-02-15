@@ -1,5 +1,5 @@
-﻿using CarHub.Services;
-using CarHub.Services.Interfaces;
+﻿using CarHub.Service.Core.Interfaces;
+using CarHub.Service.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

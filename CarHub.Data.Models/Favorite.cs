@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CarHub.Models
+namespace CarHub.Data.Models
 {
     public class Favorite
     {

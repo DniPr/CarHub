@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarHub.Data.Models\CarHub.Data.Models.csproj" />
+    <ProjectReference Include="..\CarHub.Data\CarHub.Data.csproj" />
+    <ProjectReference Include="..\CarHub.GCommon.EntityValidations\CarHub.GCommon.EntityValidations.csproj" />
+    <ProjectReference Include="..\CarHub.ViewModels\CarHub.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,6 @@
 using CarHub.Data;
-using CarHub.Services;
-using CarHub.Services.Interfaces;
+using CarHub.Service.Core;
+using CarHub.Service.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

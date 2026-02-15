@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static CarHub.GCommon.EntityValidations.EntityValidations;
-namespace CarHub.Models
+namespace CarHub.Data.Models
 {
     public class Category
     {
