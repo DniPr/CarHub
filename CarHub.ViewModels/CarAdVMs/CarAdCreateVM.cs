@@ -30,13 +30,9 @@ namespace CarHub.ViewModels.CarAdVMs
         public int Mileage { get; set; }
 
         [Required]
-        [MaxLength(CarFuelTypeMaxLength)]
-        [MinLength(CarFuelTypeMinLength)]
         public string FuelType { get; set; } = null!;
 
         [Required]
-        [MinLength(CarTransmissionMinLength)]
-        [MaxLength(CarTransmissionMaxLength)]
         public string Transmission { get; set; } = null!;
 
         [Required]

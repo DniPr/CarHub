@@ -107,7 +107,7 @@ namespace CarHub.Controllers
                 return View(model);
             }
             await carAdService.UpdateAsync(model, id);
-            return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -131,7 +131,7 @@ namespace CarHub.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> DeleteConformation(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             if (!await carAdService.IsOwnerAsync(id, userId))
