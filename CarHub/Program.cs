@@ -3,6 +3,7 @@ using CarHub.Service.Core;
 using CarHub.Service.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CarHub.Common;
 
 namespace CarHub
 {
@@ -29,13 +30,21 @@ namespace CarHub
 
                 options.SignIn.RequireConfirmedAccount = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<CarHubDbContext>();
+
             builder.Services.AddScoped<ICarAdService, CarAdService>();
             builder.Services.AddScoped<IFavouriteService, FavouriteService>();
 
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            using (IServiceScope scope = app.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+                IdentitySeeder.SeedRolesAndAdminAsync(services).GetAwaiter().GetResult();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
