@@ -22,7 +22,7 @@ namespace CarHub.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CarHub.Data.Models.CarAd", b =>
+            modelBuilder.Entity("CarHub.Models.CarAd", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,10 +89,10 @@ namespace CarHub.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("CarAds");
+                    b.ToTable("CarAds", (string)null);
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.Category", b =>
+            modelBuilder.Entity("CarHub.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,7 +107,7 @@ namespace CarHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -142,7 +142,7 @@ namespace CarHub.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.Favorite", b =>
+            modelBuilder.Entity("CarHub.Models.Favorite", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -154,7 +154,7 @@ namespace CarHub.Data.Migrations
 
                     b.HasIndex("CarAdId");
 
-                    b.ToTable("FavoriteCarAds");
+                    b.ToTable("FavoriteCarAds", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -359,9 +359,9 @@ namespace CarHub.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.CarAd", b =>
+            modelBuilder.Entity("CarHub.Models.CarAd", b =>
                 {
-                    b.HasOne("CarHub.Data.Models.Category", "Category")
+                    b.HasOne("CarHub.Models.Category", "Category")
                         .WithMany("CarAds")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -378,9 +378,9 @@ namespace CarHub.Data.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.Favorite", b =>
+            modelBuilder.Entity("CarHub.Models.Favorite", b =>
                 {
-                    b.HasOne("CarHub.Data.Models.CarAd", "CarAd")
+                    b.HasOne("CarHub.Models.CarAd", "CarAd")
                         .WithMany("Favorites")
                         .HasForeignKey("CarAdId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -448,12 +448,12 @@ namespace CarHub.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.CarAd", b =>
+            modelBuilder.Entity("CarHub.Models.CarAd", b =>
                 {
                     b.Navigation("Favorites");
                 });
 
-            modelBuilder.Entity("CarHub.Data.Models.Category", b =>
+            modelBuilder.Entity("CarHub.Models.Category", b =>
                 {
                     b.Navigation("CarAds");
                 });
