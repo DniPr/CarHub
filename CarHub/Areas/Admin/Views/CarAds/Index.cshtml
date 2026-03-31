@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CarHub.ViewModels.CarAdAdmin.AdminCarAdListItemViewModel>
+@{
+    ViewData["Title"] = "Manage Car Ads";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">Car Ads</h1>
+            <p class="text-muted mb-0">Admin management of all car listings.</p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No car ads available.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>User</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ad in Model)
+                        {
+                            <tr>
+                                <td>@ad.Title</td>
+                                <td>@ad.Price</td>
+                                <td>@ad.Category</td>
+                                <td>@ad.Owner</td>
+                                <td class="text-end">
+                                    <form asp-area="Admin"
+                                          asp-controller="CarAds"
+                                          asp-action="Delete"
+                                          asp-route-id="@ad.Id"
+                                          method="post"
+                                          class="d-inline">
+                                        @Html.AntiForgeryToken()
+
+                                        <button class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Delete this ad?');">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

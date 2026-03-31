@@ -36,6 +36,7 @@ namespace CarHub
             builder.Services.AddScoped<ICarAdService, CarAdService>();
             builder.Services.AddScoped<IFavouriteService, FavouriteService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAdminCarAdService, AdminCarAdService>();
 
             builder.Services.AddControllersWithViews();
 

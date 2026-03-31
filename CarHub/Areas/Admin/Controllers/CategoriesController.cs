@@ -1,8 +1,7 @@
-﻿using CarHub.Data;
-using CarHub.Data.Models;
+﻿using CarHub.Data.Models;
 using CarHub.Service.Core.Interfaces;
+using CarHub.ViewModels.Category;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarHub.Areas.Admin.Controllers
 {
@@ -24,18 +23,22 @@ namespace CarHub.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new CategoryFormModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category model)
+        public async Task<IActionResult> Create(CategoryFormModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            await categoryService.CreateAsync(model);
+            Category category = new Category
+            {
+                Name = model.Name
+            };
+            await categoryService.CreateAsync(category);
             return RedirectToAction(nameof(Index));
         }
 
@@ -47,18 +50,29 @@ namespace CarHub.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(category);
+            CategoryFormModel model = new CategoryFormModel
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Category model)
+        public async Task<IActionResult> Edit(CategoryFormModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            await categoryService.UpdateAsync(model);
+            var category = await categoryService.GetByIdAsync(model.Id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            category.Name = model.Name;
+            await categoryService.UpdateAsync(category);
             return RedirectToAction(nameof(Index));
         }
 
