@@ -10,7 +10,7 @@ namespace CarHub.Service.Core.Interfaces
 {
     public interface IAdminCarAdService
     {
-        Task<IEnumerable<AdminCarAdListItemViewModel>> GetAllAsync();
+        Task<AdminCarAdPagedResultViewModel> GetAllAsync(string? searchTerm, int currentPage, int pageSize);
         Task<CarAd?> GetByIdAsync(int id);
         Task DeleteAsync(int id);
     }

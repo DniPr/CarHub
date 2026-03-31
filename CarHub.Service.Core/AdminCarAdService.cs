@@ -14,21 +14,44 @@ namespace CarHub.Service.Core
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<AdminCarAdListItemViewModel>> GetAllAsync()
+        public async Task<AdminCarAdPagedResultViewModel> GetAllAsync(string? searchTerm, int currentPage, int pageSize)
         {
-            return await dbContext.CarAds
+            IQueryable<CarAd> query = dbContext.CarAds
                 .AsNoTracking()
                 .Include(c => c.Category)
-                .Include(c => c.Owner)
+                .Include(c => c.Owner);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                string normalizedSearch = searchTerm.Trim().ToLower();
+
+                query = query.Where(c =>
+                    c.Title.ToLower().Contains(normalizedSearch) ||
+                    c.Category.Name.ToLower().Contains(normalizedSearch) ||
+                    c.Owner.UserName!.ToLower().Contains(normalizedSearch));
+            }
+
+            int totalCount = await query.CountAsync();
+
+            IEnumerable<AdminCarAdListItemViewModel> carAds = await query
+                .OrderByDescending(c => c.Id)
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
                 .Select(c => new AdminCarAdListItemViewModel
                 {
                     Id = c.Id,
                     Title = c.Title,
                     Price = c.Price,
                     Category = c.Category.Name,
-                    Owner = c.Owner.UserName!
+                    Owner = c.Owner.UserName ?? "Unknown"
                 })
                 .ToListAsync();
+
+            return new AdminCarAdPagedResultViewModel
+            {
+                CarAds = carAds,
+                TotalCount = totalCount
+            };
         }
         public async Task<CarAd?> GetByIdAsync(int id)
         {
@@ -37,11 +60,16 @@ namespace CarHub.Service.Core
         public async Task DeleteAsync(int id)
         {
             var carAd = await dbContext.CarAds.FindAsync(id);
-            if (carAd != null)
+            if (carAd == null)
             {
-                dbContext.CarAds.Remove(carAd);
-                await dbContext.SaveChangesAsync();
+                return;
             }
+            var favorites = dbContext.FavoriteCarAds
+                .Where(f => f.CarAdId == id);
+
+            dbContext.FavoriteCarAds.RemoveRange(favorites);
+            dbContext.CarAds.Remove(carAd);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

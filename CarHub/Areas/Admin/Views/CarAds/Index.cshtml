@@ -1,20 +1,50 @@
-﻿@model IEnumerable<CarHub.ViewModels.CarAdAdmin.AdminCarAdListItemViewModel>
+﻿@model CarHub.ViewModels.CarAdAdmin.AdminCarAdIndexViewModel
+
 @{
     ViewData["Title"] = "Manage Car Ads";
+
+    bool hasPreviousPage = Model.CurrentPage > 1;
+    bool hasNextPage = Model.CurrentPage < Model.TotalPages;
 }
 
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h1 class="mb-1">Car Ads</h1>
             <p class="text-muted mb-0">Admin management of all car listings.</p>
         </div>
     </div>
 
-    @if (!Model.Any())
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form method="get" asp-area="Admin" asp-controller="CarAds" asp-action="Index" class="row g-3">
+                <div class="col-md-8">
+                    <label asp-for="SearchTerm" class="form-label"></label>
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search by title, category or owner" />
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-dark">Search</button>
+
+                    <a asp-area="Admin"
+                       asp-controller="CarAds"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <span class="text-muted">Total results: @Model.TotalCarAds</span>
+    </div>
+
+    @if (!Model.CarAds.Any())
     {
         <div class="alert alert-info">
-            No car ads available.
+            No car ads found.
         </div>
     }
     else
@@ -27,16 +57,16 @@
                             <th>Title</th>
                             <th>Price</th>
                             <th>Category</th>
-                            <th>User</th>
+                            <th>Owner</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ad in Model)
+                        @foreach (var ad in Model.CarAds)
                         {
                             <tr>
                                 <td>@ad.Title</td>
-                                <td>@ad.Price</td>
+                                <td>@ad.Price.ToString("F2")</td>
                                 <td>@ad.Category</td>
                                 <td>@ad.Owner</td>
                                 <td class="text-end">
@@ -48,7 +78,8 @@
                                           class="d-inline">
                                         @Html.AntiForgeryToken()
 
-                                        <button class="btn btn-sm btn-danger"
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Delete this ad?');">
                                             Delete
                                         </button>
@@ -60,5 +91,47 @@
                 </table>
             </div>
         </div>
+
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(hasPreviousPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-area="Admin"
+                       asp-controller="CarAds"
+                       asp-action="Index"
+                       asp-route-currentPage="@(Model.CurrentPage - 1)"
+                       asp-route-searchTerm="@Model.SearchTerm">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           asp-area="Admin"
+                           asp-controller="CarAds"
+                           asp-action="Index"
+                           asp-route-currentPage="@i"
+                           asp-route-searchTerm="@Model.SearchTerm">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(hasNextPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-area="Admin"
+                       asp-controller="CarAds"
+                       asp-action="Index"
+                       asp-route-currentPage="@(Model.CurrentPage + 1)"
+                       asp-route-searchTerm="@Model.SearchTerm">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
     }
 </div>
