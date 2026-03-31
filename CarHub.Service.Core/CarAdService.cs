@@ -14,21 +14,45 @@ namespace CarHub.Service.Core
         {
             this.dbContext = dbContext;
         }
-        public async Task<IEnumerable<CarAdIndexVM>> GetAllAsync()
+        public async Task<CarAdPagedResultViewModel> GetAllAsync(string? searchTerm, int currentPage, int pageSize)
         {
-            return await dbContext.CarAds
-                .OrderByDescending(c => c.CreatedOn)
-                .Select(c => new CarAdIndexVM
+            IQueryable<CarHub.Data.Models.CarAd> query = dbContext.CarAds
+                .AsNoTracking()
+                .Include(c => c.Category)
+                .Include(c => c.Owner);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                string normalizedSearch = searchTerm.Trim().ToLower();
+
+                query = query.Where(c =>
+                    c.Title.ToLower().Contains(normalizedSearch) ||
+                    c.Category.Name.ToLower().Contains(normalizedSearch) ||
+                    c.Owner.UserName!.ToLower().Contains(normalizedSearch));
+            }
+
+            int totalCount = await query.CountAsync();
+
+            IEnumerable<CarAdListItemViewModel> carAds = await query
+                .OrderByDescending(c => c.Id)
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CarAdListItemViewModel
                 {
                     Id = c.Id,
                     Title = c.Title,
-                    Brand = c.Brand,
-                    Model = c.Model,
-                    Year = c.Year,
                     Price = c.Price,
-                    ImageUrl = c.ImageUrl
+                    ImageUrl = c.ImageUrl,
+                    Category = c.Category.Name,
+                    Seller = c.Owner.UserName ?? "Unknown"
                 })
-                .ToArrayAsync();
+                .ToListAsync();
+
+            return new CarAdPagedResultViewModel
+            {
+                CarAds = carAds,
+                TotalCount = totalCount
+            };
         }
         public async Task<CarAdDetailsVM?> GetDetailsAsync(int id)
         {

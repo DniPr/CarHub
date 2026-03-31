@@ -1,52 +1,115 @@
-﻿@model IEnumerable<CarAdIndexVM>
+﻿@model CarHub.ViewModels.CarAdVMs.CarAdAllQueryModel
 
 @{
-    ViewData["Title"] = "All Cars";
+    ViewData["Title"] = "All Car Ads";
+
+    bool hasPreviousPage = Model.CurrentPage > 1;
+    bool hasNextPage = Model.CurrentPage < Model.TotalPages;
 }
 
-<h2 class="mb-4">All Cars</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h1 class="mb-1">All Car Ads</h1>
+            <p class="text-muted mb-0">Browse all available car listings in CarHub.</p>
+        </div>
+    </div>
 
-<div class="row">
-    @foreach (var car in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-
-                <img src="@car.ImageUrl"
-                     class="card-img-top"
-                     style="height: 220px; object-fit: cover;" />
-
-                <div class="card-body">
-
-                    <h5 class="card-title">
-                        @car.Brand @car.Model (@car.Year)
-                    </h5>
-
-                    <p class="card-text fw-bold text-primary">
-                        @car.Price.ToString("N0") €
-                    </p>
-
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form method="get" asp-controller="CarAds" asp-action="Index" class="row g-3">
+                <div class="col-md-8">
+                    <label asp-for="SearchTerm" class="form-label"></label>
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search by title, category or seller" />
                 </div>
 
-                <div class="card-footer text-center">
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-dark">Search</button>
 
                     <a asp-controller="CarAds"
-                       asp-action="Details"
-                       asp-route-id="@car.Id"
-                       class="btn btn-outline-primary w-100">
-
-                        View Details
-
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Clear
                     </a>
-
                 </div>
+            </form>
+        </div>
+    </div>
 
-            </div>
+    <div class="mb-3">
+        <span class="text-muted">Total results: @Model.TotalCarAds</span>
+    </div>
+
+    @if (!Model.CarAds.Any())
+    {
+        <div class="alert alert-info">
+            No car ads found.
         </div>
     }
-</div>
+    else
+    {
+        <div class="row g-4">
+            @foreach (var ad in Model.CarAds)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="@ad.ImageUrl" class="card-img-top" alt="@ad.Title" style="height: 220px; object-fit: cover;" />
 
-@if (!Model.Any())
-{
-    <p>No cars available yet.</p>
-}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@ad.Title</h5>
+                            <p class="card-text mb-1"><strong>Price:</strong> @ad.Price.ToString("F2") BGN</p>
+                            <p class="card-text mb-1"><strong>Category:</strong> @ad.Category</p>
+                            <p class="card-text mb-3"><strong>Seller:</strong> @ad.Seller</p>
+
+                            <a asp-controller="CarAds"
+                               asp-action="Details"
+                               asp-route-id="@ad.Id"
+                               class="btn btn-primary mt-auto">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(hasPreviousPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-controller="CarAds"
+                       asp-action="Index"
+                       asp-route-currentPage="@(Model.CurrentPage - 1)"
+                       asp-route-searchTerm="@Model.SearchTerm">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link"
+                           asp-controller="CarAds"
+                           asp-action="Index"
+                           asp-route-currentPage="@i"
+                           asp-route-searchTerm="@Model.SearchTerm">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(hasNextPage ? "" : "disabled")">
+                    <a class="page-link"
+                       asp-controller="CarAds"
+                       asp-action="Index"
+                       asp-route-currentPage="@(Model.CurrentPage + 1)"
+                       asp-route-searchTerm="@Model.SearchTerm">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+</div>

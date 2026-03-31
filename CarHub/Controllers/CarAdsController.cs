@@ -17,11 +17,34 @@ namespace CarHub.Controllers
             this.carAdService = carAdService;
             this.favouriteService = favouriteService;
         }
-        public async Task<IActionResult> Index()
+
+        [HttpGet]
+        public async Task<IActionResult> Index(CarAdAllQueryModel queryModel)
         {
-            var cars = await carAdService.GetAllAsync();
-            return View(cars);
+            if (queryModel.CurrentPage < 1)
+            {
+                queryModel.CurrentPage = 1;
+            }
+
+            var serviceResult = await carAdService.GetAllAsync(
+                queryModel.SearchTerm,
+                queryModel.CurrentPage,
+                queryModel.PageSize);
+
+            int totalPages = (int)Math.Ceiling((double)serviceResult.TotalCount / queryModel.PageSize);
+            if (totalPages == 0)
+            {
+                totalPages = 1;
+            }
+
+            queryModel.CarAds = serviceResult.CarAds;
+            queryModel.TotalCarAds = serviceResult.TotalCount;
+            queryModel.TotalPages = totalPages;
+
+            return View(queryModel);
         }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var car = await carAdService.GetDetailsAsync(id);

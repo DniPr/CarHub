@@ -4,7 +4,7 @@ namespace CarHub.Service.Core.Interfaces
 {
     public interface ICarAdService
     {
-        Task<IEnumerable<CarAdIndexVM>> GetAllAsync();
+        Task<CarAdPagedResultViewModel> GetAllAsync(string? searchTerm, int currentPage, int pageSize);
         Task<CarAdDetailsVM?> GetDetailsAsync(int id);
         Task<bool> IsOwnerAsync(int carAdId, string userId);
         Task<CarAdCreateVM> GetCreateModelAsync();
