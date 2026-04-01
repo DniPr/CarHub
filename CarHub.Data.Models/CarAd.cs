@@ -14,8 +14,11 @@ namespace CarHub.Data.Models
         public string Title { get; set; } = null!;
 
         [Required]
-        [MaxLength(CarBrandMaxLength)]
-        public string Brand { get; set; } = null!;
+        [ForeignKey(nameof(Brand))]
+        public int BrandId { get; set; }
+
+        [Required]
+        public Brand Brand { get; set; } = null!;
 
         [Required]
         [MaxLength(CarModelMaxLength)]
@@ -62,5 +65,6 @@ namespace CarHub.Data.Models
         public virtual IdentityUser Owner { get; set; } = null!;
 
         public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+        public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
     }
 }

@@ -13,6 +13,8 @@ namespace CarHub.Data
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<CarAd> CarAds { get; set; } = null!;
         public virtual DbSet<Favorite> FavoriteCarAds { get; set; } = null!;
+        public virtual DbSet<Brand> Brands { get; set; } = null!;
+        public virtual DbSet<Review> Reviews { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
