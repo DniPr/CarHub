@@ -63,6 +63,16 @@ namespace CarHub
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error/500");
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
+            else
+            {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
+
             app.UseRouting();
 
             app.UseAuthentication();
