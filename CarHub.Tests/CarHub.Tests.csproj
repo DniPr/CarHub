@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarHub.Data.Models\CarHub.Data.Models.csproj" />
     <ProjectReference Include="..\CarHub.Data\CarHub.Data.csproj" />
     <ProjectReference Include="..\CarHub.Service.Core\CarHub.Service.Core.csproj" />
     <ProjectReference Include="..\CarHub.ViewModels\CarHub.ViewModels.csproj" />
