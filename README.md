@@ -1,145 +1,130 @@
-# 🚗 CarHub – Car Marketplace Web Application
+# 🚗 CarHub – ASP.NET Core MVC Car Marketplace
 
-CarHub is a full-stack ASP.NET Core MVC web application that allows users to create, manage, and explore car advertisements. The platform supports authentication, authorization, favorites management, and full CRUD functionality for car listings.
-
-This project was developed using ASP.NET Core MVC, Entity Framework Core, and ASP.NET Core Identity.
-
----
-
-## ✨ Features
-
-### 👤 Authentication & Authorization
-
-* User registration and login
-* Secure logout functionality
-* Only authenticated users can create, edit, delete, and favorite car ads
-* Only the owner of a car ad can edit or delete it
-
-### 🚘 Car Ads Management (CRUD)
-
-* View all car advertisements
-* View detailed information for each car
-* Create new car ads
-* Edit existing car ads (owner only)
-* Delete car ads (owner only)
-* View personal ads ("My Cars")
-
-### ⭐ Favorites System
-
-* Add car ads to favorites
-* Remove car ads from favorites
-* View personal favorites list
-* Prevent duplicate favorites
-* Automatic cleanup of favorites when a car ad is deleted
-
-### 🗂 Categories
-
-* Seeded categories in the database
-* Dropdown selection when creating/editing ads
-
-### 🧠 Architecture & Best Practices
-
-* Service Layer abstraction (ICarAdService, IFavoriteService)
-* Dependency Injection
-* Separation of concerns
-* ViewModels used for UI interaction
-* Entity validation using Data Annotations
-* Fluent API configuration for relationships
+CarHub is a full-stack ASP.NET Core MVC web application for buying and selling cars.
+The project is developed as part of the ASP.NET Advanced course and demonstrates a clean layered architecture, role-based access, and unit testing.
 
 ---
 
-## 🛠 Technologies Used
+## 📌 Project Overview
 
-* ASP.NET Core MVC (.NET 8)
+CarHub allows users to:
+
+* Browse car listings
+* Create, edit, and delete their own ads
+* Add listings to favorites
+
+The application also includes an **Admin Area** for managing content and categories.
+
+---
+
+## 🧱 Architecture
+
+The project follows a **layered architecture**:
+
+* **CarHub.Web** – Presentation layer (MVC, Controllers, Views, Areas)
+* **CarHub.Service.Core** – Business logic layer (Services, Interfaces)
+* **CarHub.Data** – Data access layer (DbContext, Configurations)
+* **CarHub.Data.Models** – Entity models
+* **CarHub.ViewModels** – View models (UI binding models)
+* **CarHub.Tests** – Unit tests (NUnit, EF Core InMemory)
+
+---
+
+## ⚙️ Technologies Used
+
+* ASP.NET Core MVC (.NET)
 * Entity Framework Core
-* ASP.NET Core Identity
 * SQL Server
-* Bootstrap 5
-* Razor Views
-* LINQ
-* Dependency Injection
+* ASP.NET Identity (Authentication & Authorization)
+* NUnit (Unit Testing)
+* EF Core InMemory (Testing)
+* Bootstrap (UI)
 
 ---
 
-## 🧱 Database Structure
+## 🔐 Authentication & Authorization
 
-Main entities:
+* User registration and login via ASP.NET Identity
+* Role-based access control:
 
-* Users (ASP.NET Identity)
-* CarAds
-* Categories
-* Favorites
-
-Relationships:
-
-* One User → Many CarAds
-* One CarAd → One Category
-* Many Users ↔ Many CarAds (via Favorites)
+  * **User** – can create and manage their own car ads
+  * **Admin** – has access to the Admin Area
 
 ---
 
-## ▶️ How to Run the Project
+## 🛠️ Features
 
-### 1. Clone the repository
+### 👤 User Features
 
-```bash
-git clone https://github.com/DniPr/CarHub.git
-```
+* Create, edit, and delete car ads
+* Browse all listings with filtering and pagination
+* View detailed information for each car
+* Add/remove favorites
 
-### 2. Open in Visual Studio
+### 🛡️ Admin Features
 
-Open the solution file:
+* Dedicated **Admin Area**
+* Manage all car ads
+* Manage categories
+* Full control over platform content
 
-```
-CarHub.sln
-```
+---
 
-### 3. Apply database migrations
+## 🧪 Unit Testing
 
-Open Package Manager Console and run:
+* Implemented using **NUnit**
+* Uses **EF Core InMemory database**
+* Covers core service logic
 
-```powershell
-Update-Database
-```
+---
 
-### 4. Run the application
-
-Press:
-
-```
-Ctrl + F5
-```
-
-or click:
+## 📂 Project Structure
 
 ```
-Start Debugging
+CarHub/
+ ├── CarHub.Web/
+ │    ├── Areas/Admin/
+ │    ├── Controllers/
+ │    ├── Views/
+ │
+ ├── CarHub.Service.Core/
+ ├── CarHub.Data/
+ ├── CarHub.Data.Models/
+ ├── CarHub.ViewModels/
+ └── CarHub.Tests/
 ```
 
 ---
 
-## 🔐 Test User (Optional)
+## 🚀 Getting Started
 
-You can register a new account from the Register page.
+1. Clone the repository
+2. Configure your connection string in `appsettings.json`
+3. Run database migrations:
 
----
+```
+dotnet ef database update
+```
 
-## 🎯 Key Learning Objectives
+4. Start the application:
 
-This project demonstrates:
-
-* ASP.NET Core MVC architecture
-* Entity Framework Core usage
-* Identity authentication and authorization
-* Service-oriented architecture
-* Clean code practices
-* Full CRUD implementation
-* Secure user-based data access
+```
+dotnet run
+```
 
 ---
 
-## 📌 Author
+## 👨‍💻 Author
 
-Developed by Danail Petrov
+Developed by **Danail Petrov**
 
-This project is for educational purposes.
+---
+
+## 📌 Notes
+
+This project is intended for educational purposes and demonstrates:
+
+* Clean architecture principles
+* Separation of concerns
+* Testable service layer
+* Role-based application design
