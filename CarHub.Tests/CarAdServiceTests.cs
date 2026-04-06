@@ -22,12 +22,7 @@ namespace CarHub.Tests
             dbContext = new CarHubDbContext(options);
             service = new CarAdService(dbContext);
 
-            dbContext.Categories.Add(new Category
-            {
-                Id = 1,
-                Name = "Test"
-            });
-
+            dbContext.Categories.Add(CreateCategory());
             dbContext.SaveChanges();
         }
 
@@ -36,6 +31,62 @@ namespace CarHub.Tests
         {
             dbContext.Dispose();
         }
+
+        private Category CreateCategory(int id = 1, string name = "Test")
+        {
+            return new Category
+            {
+                Id = id,
+                Name = name
+            };
+        }
+
+        private IdentityUser CreateUser(string id = "user-1", string userName = "pesho")
+        {
+            return new IdentityUser
+            {
+                Id = id,
+                UserName = userName
+            };
+        }
+
+        private CarAd CreateCarAd(
+            int id,
+            string title = "BMW X5",
+            string brand = "BMW",
+            string model = "X5",
+            string ownerId = "user-1",
+            int categoryId = 1,
+            DateTime? createdOn = null)
+        {
+            return new CarAd
+            {
+                Id = id,
+                Title = title,
+                Brand = brand,
+                Model = model,
+                Year = 2020,
+                Price = 10000m,
+                Mileage = 150000,
+                FuelType = "Diesel",
+                Transmission = "Automatic",
+                Description = "Test description",
+                ImageUrl = "https://test.com/car.jpg",
+                CategoryId = categoryId,
+                OwnerId = ownerId,
+                CreatedOn = createdOn ?? DateTime.UtcNow
+            };
+        }
+
+        private Favorite CreateFavorite(int carAdId, string userId = "other-user")
+        {
+            return new Favorite
+            {
+                CarAdId = carAdId,
+                UserId = userId
+            };
+        }
+
         private CarAdCreateVM CreateValidModel()
         {
             return new CarAdCreateVM
@@ -65,64 +116,32 @@ namespace CarHub.Tests
         [Test]
         public async Task GetAllAsync_ShouldReturnPagedCarsOrderedByIdDescending()
         {
-            dbContext.Users.Add(new IdentityUser
-            {
-                Id = "user-101",
-                UserName = "ivan"
-            });
+            var user = CreateUser("user-101", "ivan");
+            dbContext.Users.Add(user);
 
             dbContext.CarAds.AddRange(
-                new CarAd
-                {
-                    Id = 1,
-                    Title = "Car 1",
-                    Brand = "BMW",
-                    Model = "X1",
-                    Year = 2018,
-                    Price = 8000m,
-                    Mileage = 180000,
-                    FuelType = "Diesel",
-                    Transmission = "Manual",
-                    Description = "Car 1",
-                    ImageUrl = "https://test.com/1.jpg",
-                    CategoryId = 1,
-                    OwnerId = "user-101",
-                    CreatedOn = new DateTime(2026, 1, 1)
-                },
-                new CarAd
-                {
-                    Id = 2,
-                    Title = "Car 2",
-                    Brand = "Audi",
-                    Model = "Q5",
-                    Year = 2019,
-                    Price = 12000m,
-                    Mileage = 140000,
-                    FuelType = "Petrol",
-                    Transmission = "Automatic",
-                    Description = "Car 2",
-                    ImageUrl = "https://test.com/2.jpg",
-                    CategoryId = 1,
-                    OwnerId = "user-101",
-                    CreatedOn = new DateTime(2026, 2, 1)
-                },
-                new CarAd
-                {
-                    Id = 3,
-                    Title = "Car 3",
-                    Brand = "Mercedes",
-                    Model = "GLC",
-                    Year = 2020,
-                    Price = 18000m,
-                    Mileage = 100000,
-                    FuelType = "Diesel",
-                    Transmission = "Automatic",
-                    Description = "Car 3",
-                    ImageUrl = "https://test.com/3.jpg",
-                    CategoryId = 1,
-                    OwnerId = "user-101",
-                    CreatedOn = new DateTime(2026, 3, 1)
-                });
+                CreateCarAd(
+                    id: 1,
+                    title: "Car 1",
+                    brand: "BMW",
+                    model: "X1",
+                    ownerId: user.Id,
+                    createdOn: new DateTime(2026, 1, 1)),
+                CreateCarAd(
+                    id: 2,
+                    title: "Car 2",
+                    brand: "Audi",
+                    model: "Q5",
+                    ownerId: user.Id,
+                    createdOn: new DateTime(2026, 2, 1)),
+                CreateCarAd(
+                    id: 3,
+                    title: "Car 3",
+                    brand: "Mercedes",
+                    model: "GLC",
+                    ownerId: user.Id,
+                    createdOn: new DateTime(2026, 3, 1))
+            );
 
             await dbContext.SaveChangesAsync();
 
@@ -148,23 +167,12 @@ namespace CarHub.Tests
         [Test]
         public async Task UpdateAsync_ShouldUpdateCarAdSuccessfully()
         {
-            var car = new CarAd
-            {
-                Id = 1,
-                Title = "Old Title",
-                Brand = "BMW",
-                Model = "X3",
-                Year = 2018,
-                Price = 8000m,
-                Mileage = 180000,
-                FuelType = "Diesel",
-                Transmission = "Manual",
-                Description = "Old description",
-                ImageUrl = "https://test.com/old.jpg",
-                CategoryId = 1,
-                OwnerId = "user-id",
-                CreatedOn = DateTime.UtcNow
-            };
+            var car = CreateCarAd(
+                id: 1,
+                title: "Old Title",
+                brand: "BMW",
+                model: "X3",
+                ownerId: "user-id");
 
             dbContext.CarAds.Add(car);
             await dbContext.SaveChangesAsync();
@@ -189,29 +197,8 @@ namespace CarHub.Tests
         [Test]
         public async Task DeleteAsync_ShouldRemoveCarAdAndItsFavourites()
         {
-            var car = new CarAd
-            {
-                Id = 1,
-                Title = "Title",
-                Brand = "BMW",
-                Model = "X5",
-                Year = 2020,
-                Price = 10000m,
-                Mileage = 150000,
-                FuelType = "Diesel",
-                Transmission = "Automatic",
-                Description = "Description",
-                ImageUrl = "https://test.com/car.jpg",
-                CategoryId = 1,
-                OwnerId = "user-id",
-                CreatedOn = DateTime.UtcNow
-            };
-
-            var favourite = new Favorite
-            {
-                CarAdId = 1,
-                UserId = "other-user"
-            };
+            var car = CreateCarAd(1, ownerId: "user-id");
+            var favourite = CreateFavorite(1);
 
             dbContext.CarAds.Add(car);
             dbContext.FavoriteCarAds.Add(favourite);
